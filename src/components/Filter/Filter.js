@@ -1,11 +1,19 @@
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
-import contactsActions from '../../redux/phonebook/phonebook-actions';
+import { contactsActions } from '../../redux/phonebook/phonebook-actions';
+import { getFilter } from '../../redux/phonebook/phonebook-selector';
 import styles from './Filter.module.css';
 
-const Filter = ({ filterValue, onChangeFilter }) => {
+const Filter = () => {
+  const filterValue = useSelector(getFilter);
+  const dispatch = useDispatch();
+
+  const onChangeFilter = event =>
+    dispatch(contactsActions.changeFilter(event.target.value));
+
   const filterInputId = nanoid();
+
   return (
     <div className={styles.FilterThumb}>
       <label htmlFor={filterInputId} className={styles.label}>
@@ -19,6 +27,7 @@ const Filter = ({ filterValue, onChangeFilter }) => {
         onChange={onChangeFilter}
         id={filterInputId}
         value={filterValue}
+        autoComplete="off"
       />
     </div>
   );
@@ -29,13 +38,4 @@ Filter.propTypes = {
   onChangeFilter: PropTypes.func,
 };
 
-const mapStateToProps = state => ({
-  filterValue: state.contacts.filter,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onChangeFilter: event =>
-    dispatch(contactsActions.changeFilter(event.target.value)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;

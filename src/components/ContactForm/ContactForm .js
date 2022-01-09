@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import contactsActions from '../../redux/phonebook/phonebook-actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsActions } from '../../redux/phonebook/phonebook-actions';
+import { getContactsItems } from '../../redux/phonebook/phonebook-selector';
 import styles from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
 
-function ContactForm({ onFormSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContactsItems);
+  const dispatch = useDispatch();
 
   const nameInputId = nanoid();
   const numberInputId = nanoid();
@@ -32,13 +35,35 @@ function ContactForm({ onFormSubmit }) {
   const handleSubmit = event => {
     event.preventDefault();
 
-    onFormSubmit({ name, number });
+    checkContacts(contacts);
     reset();
   };
 
   const reset = () => {
     setName('');
     setNumber('');
+  };
+
+  const checkContacts = contacts => {
+    const checkContactsName = contacts.find(
+      contact => name.toLowerCase() === contact.name.toLowerCase(),
+    );
+    const checkContactsNumber = contacts.find(
+      contact => number.toLowerCase() === contact.number.toLowerCase(),
+    );
+    if (checkContactsName) {
+      return onError(`${checkContactsName.name}`);
+    }
+    if (checkContactsNumber) {
+      return onError(`${checkContactsNumber.number}`);
+    }
+
+    dispatch(contactsActions.addContact(name, number));
+  };
+
+  const onError = checkContacts => {
+    const message = `${checkContacts} is already in contacts`;
+    alert(message);
   };
 
   return (
@@ -84,31 +109,4 @@ ContactForm.propTypes = {
   number: PropTypes.string,
 };
 
-// const checkContacts = contacts.find(
-//   contact => name.toLowerCase() === contact.name.toLowerCase(),
-// );
-
-// const checkContactsNumber = contacts.find(
-//   contact => number.toLowerCase() === contact.number.toLowerCase(),
-// );
-
-// if (checkContacts) {
-//   return onError(`${checkContacts.name}`);
-// }
-
-// if (checkContactsNumber) {
-//   return onError(`${checkContactsNumber.number}`);
-// }
-
-// const onError = checkContacts => {
-//   const message = `${checkContacts} is already in contacts`;
-//   alert(message);
-// };
-
-const mapDispatchToProps = dispatch => ({
-  onFormSubmit: value =>
-    dispatch(contactsActions.addContact(value.name, value.number)),
-});
-
-export default connect(null, mapDispatchToProps)(ContactForm);
-// export default ContactForm;
+export default ContactForm;

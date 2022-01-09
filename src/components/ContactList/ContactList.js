@@ -1,10 +1,17 @@
 import ContactItem from './ContactItem';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import contactsActions from '../../redux/phonebook/phonebook-actions';
+import { useSelector, useDispatch } from 'react-redux';
+import { contactsActions } from '../../redux/phonebook/phonebook-actions';
+import { getFilteredContacts } from '../../redux/phonebook/phonebook-selector';
 import styles from './ContactList.module.css';
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+const ContactList = () => {
+  const contacts = useSelector(getFilteredContacts);
+
+  const dispatch = useDispatch();
+
+  const onDeleteContact = id => dispatch(contactsActions.deleteContact(id));
+
   return (
     <ul className={styles.contactsList}>
       {contacts.map(({ id, name, number }) => (
@@ -30,32 +37,4 @@ ContactList.propTypes = {
   onDeleteContact: PropTypes.func,
 };
 
-const getFilteredContacts = (allContacts, filter) => {
-  const normalizedFilter = filter.toLowerCase();
-  return allContacts.filter(contact =>
-    contact.name.toLowerCase().includes(normalizedFilter),
-  );
-};
-
-const mapStateToProps = state => ({
-  contacts: getFilteredContacts(state.contacts.items, state.contacts.filter),
-});
-
-const mapDispatchToProps = dispatch => ({
-  onDeleteContact: id => dispatch(contactsActions.deleteContact(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
-
-//
-// const mapStateToProps = state => ({
-//   contacts: state.contacts.items,
-// });
-
-// const mapStateToProps = state => {
-//   const { filter, items } = state.contacts;
-//   const visibleContacts = getFilteredContacts(items, filter);
-//   return {
-//     contacts: visibleContacts,
-//   };
-// };
+export default ContactList;
