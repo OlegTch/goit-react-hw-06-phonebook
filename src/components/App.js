@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import styles from './Phonebook.module.css';
 import ContactForm from './ContactForm/ContactForm ';
 import Filter from './Filter/Filter';
@@ -15,10 +14,5 @@ function App() {
     </div>
   );
 }
-
-ContactForm.propTypes = {
-  contacts: PropTypes.array,
-  filter: PropTypes.string,
-};
 
 export default App;

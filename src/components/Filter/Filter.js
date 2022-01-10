@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import { contactsActions } from '../../redux/phonebook/phonebook-actions';
@@ -31,11 +30,6 @@ const Filter = () => {
       />
     </div>
   );
-};
-
-Filter.propTypes = {
-  filterValue: PropTypes.string,
-  onChangeFilter: PropTypes.func,
 };
 
 export default Filter;

@@ -1,8 +1,6 @@
-import PropTypes from "prop-types";
-import styles from "./ContactList.module.css";
+import styles from './ContactList.module.css';
 
-const ContactItem = (props) => {
-  const { id, name, number, onDeleteContact } = props;
+const ContactItem = ({ id, name, number, onDeleteContact }) => {
   return (
     <li className={styles.contactsItem} id={id}>
       <p className={styles.contactsName}>{name}:</p>
@@ -16,13 +14,6 @@ const ContactItem = (props) => {
       </button>
     </li>
   );
-};
-
-ContactItem.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  number: PropTypes.string,
-  onDeleteContact: PropTypes.func,
 };
 
 export default ContactItem;
