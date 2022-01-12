@@ -20,7 +20,7 @@
     "redux-persist": "^6.0.0",
     "web-vitals": "^2.1.2"
   },
-  "homepage": "https://OlegTch.github.io/goit-react-hw-06-phonebook",
+  "homepage": "https://OlegTch.github.io/goit-react-hw-07-phonebook",
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
