@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { contactsActions } from '../../redux/phonebook/phonebook-actions';
 import { getContactsItems } from '../../redux/phonebook/phonebook-selector';
@@ -103,10 +102,5 @@ function ContactForm() {
     </form>
   );
 }
-
-ContactForm.propTypes = {
-  name: PropTypes.string,
-  number: PropTypes.string,
-};
 
 export default ContactForm;
